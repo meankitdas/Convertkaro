@@ -1,7 +1,7 @@
 
 'use client'
 
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import JSZip from 'jszip'
 import { saveAs } from 'file-saver'
 
@@ -64,7 +64,26 @@ export default function ImageConverter() {
   const [isConverting, setIsConverting] = useState(false)
   const [conversionProgress, setConversionProgress] = useState(0)
   const [isDragOver, setIsDragOver] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
   const fileInputRef = useRef<HTMLInputElement>(null)
+
+  // Preload background image
+  useEffect(() => {
+    const img = new Image()
+    img.src = '/background.jpg'
+    img.onload = () => {
+      // Add a small delay for smooth transition
+      setTimeout(() => {
+        setIsLoading(false)
+      }, 800)
+    }
+    img.onerror = () => {
+      // If image fails to load, still show the content after a delay
+      setTimeout(() => {
+        setIsLoading(false)
+      }, 1500)
+    }
+  }, [])
 
   const getFileExtension = (filename: string | undefined): string => {
     if (!filename) return ''
@@ -210,6 +229,62 @@ export default function ImageConverter() {
     return originalTotal > 0 ? ((originalTotal - convertedTotal) / originalTotal) * 100 : 0
   }
 
+
+  // Loading Screen Component
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 flex items-center justify-center relative overflow-hidden">
+        {/* Animated background elements */}
+        <div className="absolute inset-0 opacity-30">
+          <div className="absolute top-1/4 left-1/4 w-32 h-32 bg-custom-gradient rounded-full mix-blend-multiply filter blur-xl animate-pulse"></div>
+          <div className="absolute top-1/3 right-1/4 w-24 h-24 bg-custom-gradient rounded-full mix-blend-multiply filter blur-xl animate-pulse animation-delay-200"></div>
+          <div className="absolute bottom-1/3 left-1/3 w-28 h-28 bg-custom-gradient rounded-full mix-blend-multiply filter blur-xl animate-pulse animation-delay-400"></div>
+        </div>
+        
+        {/* Loading content */}
+        <div className="text-center z-10">
+          <div className="inline-flex items-center gap-4 mb-8">
+            <img
+              src="/Logo.webp"
+              alt="ConvertKaro Logo"
+              className="w-16 h-16 rounded-2xl shadow-lg animate-pulse"
+            />
+            <h1 className="text-4xl font-bold font-museo bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
+              ConvertKaro
+            </h1>
+          </div>
+          
+          {/* Loading spinner */}
+          <div className="flex justify-center mb-6">
+            <div className="relative">
+              <div className="w-16 h-16 border-4 border-gray-600 border-t-transparent rounded-full animate-spin"></div>
+              <div className="absolute inset-0 w-16 h-16 border-4 border-transparent border-t-orange-500 rounded-full animate-spin animation-delay-200"></div>
+            </div>
+          </div>
+          
+          <p className="text-gray-300 text-lg mb-4 animate-pulse">Loading your converter...</p>
+          <p className="text-gray-400 text-sm">Preparing the best image conversion experience</p>
+          
+          {/* Loading progress dots */}
+          <div className="flex justify-center gap-2 mt-6">
+            <div className="w-2 h-2 bg-orange-500 rounded-full animate-bounce"></div>
+            <div className="w-2 h-2 bg-orange-500 rounded-full animate-bounce animation-delay-200"></div>
+            <div className="w-2 h-2 bg-orange-500 rounded-full animate-bounce animation-delay-400"></div>
+          </div>
+        </div>
+        
+        {/* Subtle loading animation styles */}
+        <style jsx>{`
+          .animation-delay-200 {
+            animation-delay: 0.2s;
+          }
+          .animation-delay-400 {
+            animation-delay: 0.4s;
+          }
+        `}</style>
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen relative overflow-hidden">
