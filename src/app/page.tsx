@@ -4,6 +4,7 @@
 import { useState, useRef, useEffect } from 'react'
 import JSZip from 'jszip'
 import { saveAs } from 'file-saver'
+import { track } from '@vercel/analytics'
 
 interface ConvertedImage {
   name: string
@@ -93,6 +94,15 @@ export default function ImageConverter() {
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(event.target.files || [])
     const imageFiles = files.filter(file => supportedInputFormats.includes(file.type))
+    
+    // Track file selection
+    if (imageFiles.length > 0) {
+      track('files_selected', {
+        fileCount: imageFiles.length,
+        inputFormats: [...new Set(imageFiles.map(file => file.type))].join(',')
+      })
+    }
+    
     setSelectedFiles(imageFiles)
     setFileFormats(new Array(imageFiles.length).fill('webp'))
     setConvertedImages([])
@@ -113,6 +123,15 @@ export default function ImageConverter() {
     setIsDragOver(false)
     const files = Array.from(e.dataTransfer.files)
     const imageFiles = files.filter(file => supportedInputFormats.includes(file.type))
+    
+    // Track drag & drop usage
+    if (imageFiles.length > 0) {
+      track('drag_drop_used', {
+        fileCount: imageFiles.length,
+        inputFormats: [...new Set(imageFiles.map(file => file.type))].join(',')
+      })
+    }
+    
     setSelectedFiles(imageFiles)
     setFileFormats(new Array(imageFiles.length).fill('webp'))
     setConvertedImages([])
@@ -168,6 +187,12 @@ export default function ImageConverter() {
   const handleConvertAll = async () => {
     if (selectedFiles.length === 0) return
 
+    // Track conversion start
+    track('conversion_started', {
+      fileCount: selectedFiles.length,
+      formats: fileFormats.join(',')
+    })
+
     setIsConverting(true)
     setConversionProgress(0)
     const converted: ConvertedImage[] = []
@@ -185,6 +210,19 @@ export default function ImageConverter() {
 
     setConvertedImages(converted)
     setIsConverting(false)
+
+    // Track successful conversion
+    if (converted.length > 0) {
+      const totalSavings = converted.reduce((sum, img) =>
+        sum + ((img.originalSize - img.convertedSize) / img.originalSize) * 100, 0
+      ) / converted.length
+      
+      track('conversion_completed', {
+        filesConverted: converted.length,
+        avgSavings: Math.round(totalSavings),
+        outputFormats: [...new Set(converted.map(img => img.outputFormat))].join(',')
+      })
+    }
   }
 
   const handleFormatChange = (index: number, format: OutputFormat) => {
@@ -194,6 +232,13 @@ export default function ImageConverter() {
   }
 
   const handleSingleDownload = (image: ConvertedImage) => {
+    // Track individual file download
+    track('file_downloaded', {
+      format: image.outputFormat,
+      originalFormat: image.originalFormat,
+      compressionRate: Math.round(((image.originalSize - image.convertedSize) / image.originalSize) * 100)
+    })
+    
     saveAs(image.blob, image.name)
   }
 
@@ -204,6 +249,13 @@ export default function ImageConverter() {
       handleSingleDownload(convertedImages[0])
       return
     }
+
+    // Track bulk download
+    track('bulk_download', {
+      fileCount: convertedImages.length,
+      formats: [...new Set(convertedImages.map(img => img.outputFormat))].join(','),
+      totalSize: convertedImages.reduce((sum, img) => sum + img.convertedSize, 0)
+    })
 
     const zip = new JSZip()
     

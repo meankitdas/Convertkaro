@@ -57,6 +57,7 @@ Convert your images instantly with our free online tool - no registration requir
 - **Framework:** [Next.js 15.5](https://nextjs.org/) with App Router
 - **Frontend:** [React 19.1](https://reactjs.org/) + [TypeScript](https://www.typescriptlang.org/)
 - **Styling:** [Tailwind CSS](https://tailwindcss.com/) + Custom CSS
+- **Analytics:** [Vercel Analytics](https://vercel.com/docs/analytics) for user tracking
 - **File Processing:** HTML5 Canvas API + FileReader API
 - **Archive Creation:** [JSZip](https://stuk.github.io/jszip/)
 - **File Downloads:** [FileSaver.js](https://github.com/eligrey/FileSaver.js/)
@@ -142,6 +143,7 @@ ConvertKaro is fully optimized for search engines and social sharing:
 - **📱 Open Graph:** Rich social media previews for Facebook, LinkedIn
 - **🐦 Twitter Cards:** Optimized Twitter sharing with large image cards
 - **🔍 Structured Data:** JSON-LD schema for enhanced search results
+- **📊 Analytics Integration:** Comprehensive Vercel Analytics tracking
 - **⚡ Performance:** Optimized for Core Web Vitals
 - **🌐 PWA Ready:** Progressive Web App capabilities
 
