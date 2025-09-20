@@ -18,7 +18,7 @@ const museoModerno = MuseoModerno({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://convertkaro.com'), // Set your actual domain here
+  metadataBase: new URL('https://convertkaro-ten.vercel.app'),
   title: "ConvertKaro - Free Online Image Format Converter | PNG to WebP, JPEG & More",
   description: "Transform your images with ConvertKaro - the fastest free online image converter. Convert PNG to WebP, JPEG, GIF, BMP and all popular formats instantly. Maintain stunning quality while reducing file sizes by up to 80%.",
   keywords: [
@@ -125,9 +125,9 @@ export const metadata: Metadata = {
   
   // Alternate languages (add more as needed)
   alternates: {
-    canonical: "https://convertkaro.com", // Update with your actual domain
+    canonical: "https://convertkaro-ten.vercel.app",
     languages: {
-      "en-US": "https://convertkaro.com",
+      "en-US": "https://convertkaro-ten.vercel.app",
       // Add more language versions if available
     },
   },
@@ -144,7 +144,7 @@ export default function RootLayout({
     "@type": "WebApplication",
     "name": "ConvertKaro",
     "description": "Free online image format converter. Convert PNG to WebP, JPEG, GIF, BMP and all popular formats instantly while maintaining quality.",
-    "url": "https://convertkaro.com",
+    "url": "https://convertkaro-ten.vercel.app",
     "applicationCategory": "MultimediaApplication",
     "operatingSystem": "Web Browser",
     "offers": {
@@ -164,7 +164,7 @@ export default function RootLayout({
       "Privacy-focused (client-side processing)",
       "Download individual files or ZIP archives"
     ],
-    "screenshot": "https://convertkaro.com/Logo.webp",
+    "screenshot": "https://convertkaro-ten.vercel.app/Logo.webp",
     "aggregateRating": {
       "@type": "AggregateRating",
       "ratingValue": "4.8",
@@ -181,14 +181,14 @@ export default function RootLayout({
       "name": "ConvertKaro",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://convertkaro.com/Logo.webp"
+        "url": "https://convertkaro-ten.vercel.app/Logo.webp"
       }
     },
     "softwareRequirements": "Web Browser with JavaScript enabled",
     "browserRequirements": "Modern web browser (Chrome, Firefox, Safari, Edge)",
     "permissions": "No special permissions required",
     "isAccessibleForFree": true,
-    "usageInfo": "https://convertkaro.com",
+    "usageInfo": "https://convertkaro-ten.vercel.app",
     "mainEntity": {
       "@type": "SoftwareApplication",
       "name": "Image Format Converter",
