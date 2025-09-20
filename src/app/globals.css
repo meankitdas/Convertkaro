@@ -1,26 +1,176 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* Body background with image and noise overlay */
+body {
+  margin: 0;
+  padding: 0;
+  background: url('/background.jpg') center center / cover no-repeat fixed;
+  min-height: 100vh;
+  position: relative;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.1;
+  pointer-events: none;
+  z-index: 0;
+  mix-blend-mode: overlay;
+  filter: blur(0.5px);
+  background-image:
+    radial-gradient(circle at 20% 30%, rgba(0,0,0,0.8) 1px, transparent 2px),
+    radial-gradient(circle at 80% 20%, rgba(0,0,0,0.6) 1px, transparent 3px),
+    radial-gradient(circle at 40% 70%, rgba(0,0,0,0.4) 0.5px, transparent 2px),
+    radial-gradient(circle at 90% 80%, rgba(0,0,0,0.7) 1px, transparent 2px),
+    radial-gradient(circle at 10% 90%, rgba(0,0,0,0.5) 1px, transparent 3px),
+    radial-gradient(circle at 60% 10%, rgba(0,0,0,0.6) 0.5px, transparent 2px),
+    radial-gradient(circle at 30% 50%, rgba(0,0,0,0.4) 1px, transparent 4px);
+  background-size: 8px 8px, 12px 12px, 6px 6px, 10px 10px, 14px 14px, 5px 5px, 16px 16px;
+  background-position: 0 0, 2px 2px, 4px 4px, 6px 6px, 8px 8px, 10px 10px, 12px 12px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* Custom animations and styles */
+@keyframes blob {
+  0% {
+    transform: translate(0px, 0px) scale(1);
+  }
+  33% {
+    transform: translate(30px, -50px) scale(1.1);
+  }
+  66% {
+    transform: translate(-20px, 20px) scale(0.9);
+  }
+  100% {
+    transform: translate(0px, 0px) scale(1);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes glow {
+  0%, 100% {
+    box-shadow: 0 0 5px rgba(255, 49, 49, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(255, 49, 49, 0.6), 0 0 30px rgba(255, 49, 49, 0.4);
+  }
+}
+
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.33);
+  }
+  40%, 50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.2);
+  }
+}
+
+@keyframes gradient-shift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.animate-blob {
+  animation: blob 7s infinite;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.animate-glow {
+  animation: glow 2s ease-in-out infinite alternate;
+}
+
+.animate-pulse-ring {
+  animation: pulse-ring 1.25s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+}
+
+.animate-gradient {
+  background-size: 400% 400%;
+  animation: gradient-shift 3s ease infinite;
+}
+
+.animation-delay-200 {
+  animation-delay: 0.2s;
+}
+
+.animation-delay-400 {
+  animation-delay: 0.4s;
+}
+
+.animation-delay-2000 {
+  animation-delay: 2s;
+}
+
+.animation-delay-4000 {
+  animation-delay: 4s;
+}
+
+/* Custom scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #FF3131;
+  border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #FF3131;
+}
+
+/* Glass morphism effect */
+.glass-morphism {
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.125);
+}
+
+/* Removed old noise overlay - now using body::before for cleaner implementation */
+
+/* Mobile optimizations */
+@media (max-width: 640px) {
+  .animate-blob {
+    animation-duration: 10s;
+  }
+}
+
+/* Reduced motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .animate-blob,
+  .animate-float,
+  .animate-glow,
+  .animate-pulse-ring,
+  .animate-gradient {
+    animation: none;
+  }
 }
